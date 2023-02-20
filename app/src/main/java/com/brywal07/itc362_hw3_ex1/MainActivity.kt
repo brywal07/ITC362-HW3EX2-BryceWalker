@@ -12,7 +12,6 @@ private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var isClicked = false
-    private var numCorrect = 0.0
     private val questionBank = listOf(
         Question(R.string.question_australia, true, false),
         Question(R.string.question_oceans, true, false),
@@ -29,37 +28,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.trueButton.setOnClickListener { view: View ->
-            if(currentIndex==questionBank.size - 1){
-                currentQuestion.isAnswered = true
-                checkAnswer(true)
-                var score = String.format("%.1f",getScore())
-                score = score.plus(" %")
-                Toast.makeText(this, "Your score is: ".plus(score), Toast.LENGTH_LONG).show()
-                updateQuestion()
-                reset()
-            }else {
-                currentQuestion.isAnswered = true
-                checkAnswer(true)
-                updateQuestion()
-            }
+            currentQuestion.isAnswered = true
+            checkAnswer(true)
         }
         binding.falseButton.setOnClickListener { view: View ->
-            if(currentIndex==questionBank.size - 1){
-                currentQuestion.isAnswered = true
-                checkAnswer(false)
-                var score = String.format("%.1f",getScore())
-                score = score.plus(" %")
-                Toast.makeText(this, "Your score is: ".plus(score), Toast.LENGTH_LONG).show()
-                updateQuestion()
-                reset()
-
-            }else {
-                currentQuestion.isAnswered = true
-                checkAnswer(false)
-                updateQuestion()
-            }
-
-
+            currentQuestion.isAnswered = true
+            checkAnswer(false)
         }
         binding.nextButton.setOnClickListener{
             currentIndex = (currentIndex + 1) % questionBank.size
@@ -116,21 +90,6 @@ class MainActivity : AppCompatActivity() {
         }else{
             R.string.incorrect_snack
         }
-        if (userAnswer == correctAnswer){
-            numCorrect ++
-        }else{
-            numCorrect = numCorrect
-        }
-
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
-    }
-    private fun getScore():Double{
-        return (numCorrect / questionBank.size)*100
-    }
-    private fun reset(){
-        for (i in questionBank){
-            i.isAnswered=false
-            numCorrect = 0.0
-        }
     }
 }
